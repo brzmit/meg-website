@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Mobile Navigation Toggle
     const mobileToggle = document.querySelector('.mobile-toggle');
-    const navLinks = document.querySelector('.nav-links');
+    const headerRight = document.querySelector('.header-right');
 
     if (mobileToggle) {
         mobileToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+            headerRight.classList.toggle('active');
             const icon = mobileToggle.querySelector('i');
             if (icon) {
                 icon.classList.toggle('fa-bars');
@@ -17,11 +17,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Smooth Scroll for Anchor Links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            if (href === "#") return; // Ignore placeholder links
+
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
+            const target = document.querySelector(href);
             if (target) {
                 // Close mobile menu if open
-                navLinks.classList.remove('active');
+                const headerRight = document.querySelector('.header-right');
+                headerRight.classList.remove('active');
+                const mobileToggle = document.querySelector('.mobile-toggle');
+                const icon = mobileToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-times');
+                }
 
                 // Scroll to target
                 const headerOffset = 80;
@@ -54,24 +64,66 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // Contact Form Submission Handler
+    // --- GSAP Animations ---
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Staggered Fade-in for Services
+        gsap.from(".service-card", {
+            scrollTrigger: {
+                trigger: ".services-grid",
+                start: "top 80%", // Start when top of grid hits 80% of viewport
+            },
+            y: 50,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2, // 0.2s delay between each card
+            ease: "power2.out"
+        });
+    }
+
+    // --- Active Navigation Highlight ---
+    const sections = document.querySelectorAll("section");
+    const navLi = document.querySelectorAll(".nav-links li a");
+
+    window.addEventListener("scroll", () => {
+        let current = "";
+        sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (pageYOffset >= sectionTop - 150) { // -150 offset for header
+                current = section.getAttribute("id");
+            }
+        });
+
+        navLi.forEach((a) => {
+            a.classList.remove("active");
+            if (a.getAttribute("href") === "#" + current) {
+                a.classList.add("active");
+            }
+        });
+    });
+
+    // --- Contact Form Handling ---
     const contactForm = document.getElementById('contact-form');
     const formStatus = document.getElementById('form-status');
 
     if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-
             const submitButton = contactForm.querySelector('button[type="submit"]');
-            const originalButtonText = submitButton.textContent;
+            const originalBtnText = submitButton.innerText;
 
-            // Disable button and show loading state
+            // Show loading state
+            submitButton.innerText = 'Sending...';
             submitButton.disabled = true;
-            submitButton.textContent = 'Sending...';
-            formStatus.style.display = 'none';
+            formStatus.style.display = 'block'; // Make visible
+            formStatus.innerHTML = '';
+            formStatus.className = 'form-status';
+
+            const formData = new FormData(contactForm);
 
             try {
-                const formData = new FormData(contactForm);
                 const response = await fetch(contactForm.action, {
                     method: 'POST',
                     body: formData,
@@ -81,24 +133,79 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.ok) {
-                    // Success
-                    formStatus.innerHTML = '<p style="color: var(--primary); font-weight: 600;"><i class="fas fa-check-circle"></i> Thank you! Your message has been sent successfully.</p>';
-                    formStatus.style.display = 'block';
+                    formStatus.innerHTML = '<div class="success-message">Thank you! Your message has been delivered. We will be in touch shortly.</div>';
                     contactForm.reset();
                 } else {
-                    // Error
-                    formStatus.innerHTML = '<p style="color: #ff6b6b; font-weight: 600;"><i class="fas fa-exclamation-circle"></i> Oops! There was a problem. Please try again.</p>';
-                    formStatus.style.display = 'block';
+                    const data = await response.json();
+                    if (Object.hasOwnProperty.call(data, 'errors')) {
+                        formStatus.innerHTML = `<div class="error-message">${data.errors.map(error => error.message).join(", ")}</div>`;
+                    } else {
+                        formStatus.innerHTML = '<div class="error-message">Oops! There was a problem submitting your form.</div>';
+                    }
                 }
             } catch (error) {
-                // Network error
-                formStatus.innerHTML = '<p style="color: #ff6b6b; font-weight: 600;"><i class="fas fa-exclamation-circle"></i> Network error. Please check your connection and try again.</p>';
-                formStatus.style.display = 'block';
+                formStatus.innerHTML = '<div class="error-message">Oops! There was a problem submitting your form.</div>';
             } finally {
-                // Re-enable button
+                submitButton.innerText = originalBtnText;
                 submitButton.disabled = false;
-                submitButton.textContent = originalButtonText;
             }
         });
+    }
+    // --- Calendly Integration ---
+    const loadCalendly = () => {
+        return new Promise((resolve, reject) => {
+            if (window.Calendly) {
+                resolve();
+                return;
+            }
+
+            // Load CSS
+            const link = document.createElement('link');
+            link.href = 'https://assets.calendly.com/assets/external/widget.css';
+            link.rel = 'stylesheet';
+            document.head.appendChild(link);
+
+            // Load JS
+            const script = document.createElement('script');
+            script.src = 'https://assets.calendly.com/assets/external/widget.js';
+            script.async = true;
+            script.onload = () => resolve();
+            script.onerror = () => reject(new Error('Calendly script failed to load'));
+            document.body.appendChild(script);
+        });
+    };
+
+    const openCalendlyPopup = () => {
+        loadCalendly().then(() => {
+            Calendly.initPopupWidget({
+                url: 'https://calendly.com/brandon-mitchellenterprisegrp/30min',
+                text: 'Schedule time with me',
+                color: '#0099CC',
+                textColor: '#ffffff',
+                branding: true
+            });
+        }).catch(err => console.error(err));
+    };
+
+    // Attach click listeners to all triggers
+    document.querySelectorAll('.calendly-trigger').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openCalendlyPopup();
+        });
+    });
+
+    // Lazy load on scroll to contact section
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    loadCalendly(); // Preload when close
+                    observer.disconnect();
+                }
+            });
+        }, { rootMargin: '200px' });
+        observer.observe(contactSection);
     }
 });

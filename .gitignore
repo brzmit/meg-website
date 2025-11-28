@@ -1,0 +1,14 @@
+# System Files
+.DS_Store
+Thumbs.db
+
+# Sensitive/Large Files
+business_plan.zip
+capability_statement.zip
+*.pdf
+Private & Shared/
+*.png       
+*.jpg
+
+# Logs
+*.log
