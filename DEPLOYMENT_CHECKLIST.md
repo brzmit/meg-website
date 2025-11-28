@@ -17,9 +17,9 @@
 ## Hosting
 - [x] **GitHub Pages**:
   - [x] Repository created
-  - [ ] Code pushed (Latest updates)
+  - [x] Code pushed (Latest updates)
   - [x] Pages site enabled in Settings > Pages
-  - [ ] **Enforce HTTPS**: Check this box in GitHub Settings > Pages.
+  - [x] **Enforce HTTPS**: Check this box in GitHub Settings > Pages.
 
 ## Post-Deployment
 - [ ] Test all links on the live site
