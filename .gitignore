@@ -7,8 +7,7 @@ business_plan.zip
 capability_statement.zip
 *.pdf
 Private & Shared/
-*.png       
-*.jpg
+
 
 # Logs
 *.log
