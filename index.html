@@ -387,8 +387,12 @@
                     <ul
                         style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-muted);">
                         <li><i class="fas fa-envelope" style="margin-right: 0.5rem;"></i>
-                            contact@mitchellenterprisegrp.com</li>
-                        <li><i class="fas fa-phone" style="margin-right: 0.5rem;"></i> 832-984-8547</li>
+                            <a href="mailto:contact@mitchellenterprisegrp.com"
+                                style="color: inherit;">contact@mitchellenterprisegrp.com</a>
+                        </li>
+                        <li><i class="fas fa-phone" style="margin-right: 0.5rem;"></i>
+                            <a href="tel:+18329848547" style="color: inherit;">832-984-8547</a>
+                        </li>
                         <li><i class="fas fa-map-marker-alt" style="margin-right: 0.5rem;"></i> Houston, Texas</li>
                     </ul>
                 </div>
@@ -398,6 +402,14 @@
             </div>
         </div>
     </footer>
+
+    <!-- Sticky CTA for Mobile (appears after scrolling past hero) -->
+    <div class="sticky-cta-mobile">
+        <a href="#" class="btn btn-primary calendly-trigger">
+            <i class="far fa-calendar-alt" style="margin-right: 0.5rem;"></i>
+            Book Consultation
+        </a>
+    </div>
 
     <!-- Canvas Container for 3D Background -->
     <div id="canvas-container"></div>

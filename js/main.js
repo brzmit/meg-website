@@ -196,16 +196,37 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Lazy load on scroll to contact section
-    const contactSection = document.getElementById('contact');
+    let calendlyLoaded = false;
+    const contactSection = document.querySelector('#contact');
+
+    const calendlyObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !calendlyLoaded) {
+                loadCalendly();
+                calendlyLoaded = true;
+            }
+        });
+    });
+
     if (contactSection) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    loadCalendly(); // Preload when close
-                    observer.disconnect();
-                }
-            });
-        }, { rootMargin: '200px' });
-        observer.observe(contactSection);
+        calendlyObserver.observe(contactSection);
+    }
+
+    // --- Sticky CTA for Mobile ---
+    const stickyCTA = document.querySelector('.sticky-cta-mobile');
+    const heroSection = document.querySelector('.hero');
+
+    if (stickyCTA && heroSection) {
+        window.addEventListener('scroll', () => {
+            const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+            const scrollPosition = window.scrollY + window.innerHeight;
+
+            // Show sticky CTA after scrolling past hero section
+            if (window.scrollY > heroBottom - 200) {
+                stickyCTA.classList.add('visible');
+            } else {
+                stickyCTA.classList.remove('visible');
+            }
+        });
     }
 });

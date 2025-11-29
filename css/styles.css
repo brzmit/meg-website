@@ -286,7 +286,7 @@ header .container {
     /* Limit width for readability */
     margin: 0 auto;
     /* Center block */
-    margin-top: calc(18vh - 10px);
+    margin-top: calc(18vh - 35px);
     /* Push content down visually */
 }
 
@@ -538,15 +538,69 @@ footer {
 @media (max-width: 768px) {
     header .container {
         justify-content: space-between;
+        padding: 0 1.5rem;
+        /* Increased padding */
+    }
+
+    /* Logo - Smaller on Mobile */
+    .logo {
+        font-size: 1.1rem;
+        /* 2 levels smaller than desktop 1.5rem */
+    }
+
+    .container {
+        padding: 0 1.5rem;
+        /* Increased global mobile padding */
+    }
+
+    .section-padding {
+        padding: 3.5rem 0;
+        /* Tightened from 4rem for better flow */
+    }
+
+    /* Section Titles - Larger on Mobile */
+    h2 {
+        font-size: 2rem;
+        line-height: 1.2;
+        margin-bottom: 0.75rem;
+    }
+
+    /* Buttons - Better Touch Targets */
+    .btn {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+        min-height: 48px;
+        /* Ensure minimum touch target */
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    /* Touch Feedback - Active State */
+    .btn:active {
+        transform: scale(0.97);
+        box-shadow: 0 0 10px var(--primary-glow);
+    }
+
+    .btn-primary {
+        font-weight: 600;
+    }
+
+    /* Card Touch Feedback */
+    .service-card:active,
+    .why-card:active,
+    .cert-badge:active {
+        transform: scale(0.98);
+        opacity: 0.95;
     }
 
     .header-right {
         position: fixed;
         top: 0;
         right: -100%;
-        width: 70%;
+        width: 85%;
+        /* Slightly wider menu */
         height: 100vh;
-        background: rgba(5, 17, 32, 0.85);
+        background: rgba(5, 17, 32, 0.95);
+        /* Darker background */
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         transition: var(--transition-smooth);
@@ -555,6 +609,7 @@ footer {
         z-index: 999;
         flex-direction: column;
         justify-content: center;
+        padding: 2rem;
     }
 
     .header-right.active {
@@ -563,7 +618,15 @@ footer {
 
     .nav-links {
         flex-direction: column;
-        gap: 2rem;
+        gap: 2.5rem;
+        /* More space between links */
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links a {
+        font-size: 1.2rem;
+        /* Larger touch targets */
     }
 
     .mobile-toggle {
@@ -573,10 +636,49 @@ footer {
     .hero {
         text-align: center;
         justify-content: center;
+        padding-top: 80px;
+        /* Ensure content clears header */
     }
 
     .hero-content {
         margin: 0 auto;
+        margin-top: 5vh;
+        /* Balanced top margin */
+        padding: 0 1rem;
+    }
+
+    .hero-content h1 {
+        font-size: 2.5rem;
+        /* Smaller headline for mobile */
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-content h3 {
+        font-size: 1.5rem;
+        margin-top: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-tagline {
+        gap: 1rem;
+        /* More breathing room */
+    }
+
+    .hero-content p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 3rem;
+        letter-spacing: 0.01em;
+        /* Improved readability */
+    }
+
+    /* Hero Buttons - Larger */
+    .hero-btns .btn {
+        padding: 1.25rem 2.5rem;
+        font-size: 1.05rem;
+        width: 100%;
+        max-width: 400px;
     }
 
     /* Responsive CTA Button */
@@ -590,9 +692,122 @@ footer {
 
     .hero-bg {
         width: 100%;
-        height: 50%;
+        height: 60%;
         top: auto;
         bottom: 0;
+    }
+
+    /* Service Cards - 2 Column Grid */
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 cards side by side */
+        gap: 1rem;
+        margin-top: 2rem;
+        /* Tightened spacing */
+    }
+
+    .service-card {
+        padding: 1.5rem 1rem;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .service-card h3 {
+        font-size: 1rem;
+        line-height: 1.3;
+    }
+
+    .service-card p {
+        font-size: 0.85rem;
+        line-height: 1.5;
+        letter-spacing: 0.01em;
+    }
+
+    .service-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Why Choose Grid - 2 Column */
+    .why-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* Override the existing mobile rule */
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .why-card {
+        padding: 1.5rem 1rem;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .why-card h3 {
+        font-size: 1rem;
+        line-height: 1.3;
+    }
+
+    .why-card p {
+        font-size: 0.85rem;
+        line-height: 1.5;
+        letter-spacing: 0.01em;
+    }
+
+    .why-icon {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Certifications - 2 Column Grid */
+    .certifications-grid {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 badges side by side */
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .cert-badge {
+        padding: 1.5rem 1rem;
+        transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .cert-badge h4 {
+        font-size: 0.95rem;
+    }
+
+    .cert-badge p {
+        font-size: 0.8rem;
+    }
+
+    /* Sticky CTA Button - Mobile Only */
+    .sticky-cta-mobile {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 998;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .sticky-cta-mobile.visible {
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .sticky-cta-mobile .btn {
+        box-shadow: 0 4px 20px rgba(0, 153, 204, 0.4);
+        font-size: 0.95rem;
+        padding: 0.9rem 2rem;
+    }
+
+    /* Tappable Links - Better Styling */
+    footer a {
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    footer a:hover {
+        color: var(--primary);
     }
 }
 
@@ -621,7 +836,7 @@ footer {
 }
 
 .hero-content h1 {
-    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-size: clamp(3.5rem, 7vw, 6rem);
     /* Larger headline */
     margin-bottom: 1.5rem;
     animation-delay: 0.1s;
@@ -631,7 +846,7 @@ footer {
     margin-top: 40px;
     /* Added to lower the sub-headline */
     margin-bottom: 1rem;
-    font-size: 2rem;
+    font-size: 2.5rem;
     /* Increased font size */
 }
 
@@ -643,7 +858,7 @@ footer {
 }
 
 .hero-content p {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
     /* Larger subtext */
     line-height: 1.8;
     color: var(--text-muted);
