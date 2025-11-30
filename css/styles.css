@@ -199,9 +199,16 @@ header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 10px 0 0;
-    /* Remove all padding, add 10px right only */
+    width: 100%;
+    /* Full width instead of 90% */
+    max-width: none;
+    /* Remove max-width constraint */
+    margin: 0;
+    /* Remove auto centering */
+    padding: 0 1rem;
+    /* Equal padding on both sides for breathing room */
 }
+
 
 .logo {
     font-family: var(--font-heading);
@@ -286,8 +293,8 @@ header .container {
     /* Limit width for readability */
     margin: 0 auto;
     /* Center block */
-    margin-top: calc(18vh - 35px);
-    /* Push content down visually */
+    margin-top: calc(10vh - 35px);
+    /* Raised higher for CTA visibility */
 }
 
 /* ... (Visual section skipped as it remains similar) ... */

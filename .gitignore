@@ -8,6 +8,8 @@ capability_statement.zip
 *.pdf
 Private & Shared/
 
+# Planning/Internal Docs
+FUTURE_IDEAS.md
 
 # Logs
 *.log
